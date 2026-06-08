@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Contact CDCA — Reach out with questions about starting a club, leader training, partnerships, or press inquiries." />
+  <title>Contact — CDCA</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Source+Serif+4:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    .contact-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 64px;
+      align-items: start;
+    }
+    .contact-sidebar {
+      position: sticky;
+      top: calc(var(--nav-height) + 32px);
+    }
+    .contact-info__item {
+      padding: 20px 0;
+      border-bottom: 1px solid var(--gray-200);
+    }
+    .contact-info__item:last-child { border-bottom: none; }
+    .contact-info__label {
+      font-family: var(--font-ui);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold-dark);
+      margin-bottom: 6px;
+    }
+    .contact-info__value {
+      font-size: 0.95rem;
+      color: var(--text-dark);
+      font-family: var(--font-ui);
+    }
+    .contact-info__value a {
+      color: var(--navy);
+      transition: color 0.18s;
+    }
+    .contact-info__value a:hover { color: var(--gold-dark); }
+    .social-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .social-row a {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-ui);
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--navy);
+      padding: 8px 14px;
+      border: 1.5px solid var(--gray-200);
+      border-radius: var(--radius-sm);
+      transition: all 0.18s ease;
+    }
+    .social-row a:hover {
+      border-color: var(--navy);
+      background: var(--navy);
+      color: var(--white);
+    }
+    .faq-mini {
+      margin-top: 48px;
+    }
+    .faq-mini h4 {
+      font-family: var(--font-ui);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold-dark);
+      margin-bottom: 16px;
+    }
+    .faq-mini__item {
+      padding: 16px 0;
+      border-bottom: 1px solid var(--gray-200);
+    }
+    .faq-mini__item:last-child { border-bottom: none; }
+    .faq-mini__item p {
+      font-family: var(--font-ui);
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 4px;
+    }
+    .faq-mini__item span {
+      font-size: 0.82rem;
+      color: var(--gray-600);
+      line-height: 1.55;
+    }
+    .subject-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+    .subject-card {
+      border: 1.5px solid var(--gray-200);
+      border-radius: var(--radius-md);
+      padding: 16px 18px;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      background: var(--white);
+    }
+    .subject-card:hover,
+    .subject-card.selected {
+      border-color: var(--navy);
+      background: var(--navy);
+      color: var(--white);
+    }
+    .subject-card:hover .subject-card__title,
+    .subject-card.selected .subject-card__title {
+      color: var(--white);
+    }
+    .subject-card:hover .subject-card__sub,
+    .subject-card.selected .subject-card__sub {
+      color: rgba(255,255,255,0.65);
+    }
+    .subject-card__icon { font-size: 1.2rem; margin-bottom: 6px; display: block; }
+    .subject-card__title {
+      font-family: var(--font-ui);
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--navy);
+      display: block;
+      margin-bottom: 2px;
+    }
+    .subject-card__sub {
+      font-family: var(--font-ui);
+      font-size: 0.72rem;
+      color: var(--gray-400);
+    }
+    @media (max-width: 768px) {
+      .contact-layout {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+      .contact-sidebar {
+        position: static;
+      }
+      .subject-cards {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===================== NAVIGATION ===================== -->
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="container nav__inner">
+      <a href="index.html" class="nav__logo" aria-label="CDCA Home">
+        <div class="nav__logo-mark">CD</div>
+        <div>
+          <span class="nav__logo-text">CDCA</span>
+          <span class="nav__logo-sub">Civil Dialogue Clubs of America</span>
+        </div>
+      </a>
+      <div class="nav__links">
+        <a href="index.html"        class="nav__link">Home</a>
+        <a href="about.html"        class="nav__link">About</a>
+        <a href="start-a-club.html" class="nav__link">Start a Club</a>
+        <a href="training.html"     class="nav__link">Training</a>
+        <a href="directory.html"    class="nav__link">Directory</a>
+        <a href="contact.html"      class="nav__link">Contact</a>
+        <a href="start-a-club.html" class="nav__link nav__link--cta">Get Started</a>
+      </div>
+      <button class="nav__hamburger" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <nav class="nav__mobile" aria-label="Mobile navigation">
+      <a href="index.html"        class="nav__link">Home</a>
+      <a href="about.html"        class="nav__link">About</a>
+      <a href="start-a-club.html" class="nav__link">Start a Club</a>
+      <a href="training.html"     class="nav__link">Training</a>
+      <a href="directory.html"    class="nav__link">Directory</a>
+      <a href="contact.html"      class="nav__link">Contact</a>
+      <a href="start-a-club.html" class="nav__link nav__link--cta">Get Started →</a>
+    </nav>
+  </nav>
+
+
+  <!-- ===================== PAGE HEADER ===================== -->
+  <section class="page-header">
+    <div class="page-header__grid" aria-hidden="true"></div>
+    <div class="container page-header__inner">
+      <div class="page-header__breadcrumb">
+        <a href="index.html">Home</a>
+        <span aria-hidden="true">/</span>
+        <span>Contact</span>
+      </div>
+      <h1>Get in Touch</h1>
+      <p>Questions, ideas, partnerships, press — we're a small team and we read everything. Reach out.</p>
+    </div>
+  </section>
+
+
+  <!-- ===================== CONTACT LAYOUT ===================== -->
+  <section class="section section--cream">
+    <div class="container">
+      <div class="contact-layout">
+
+        <!-- LEFT: Contact Info -->
+        <aside class="contact-sidebar fade-in">
+
+          <span class="section-label">Reach Us Directly</span>
+          <h2 style="font-size: 1.6rem; margin-bottom: 24px;">We'd love to<br/>hear from you.</h2>
+
+          <div>
+            <div class="contact-info__item">
+              <div class="contact-info__label">
+                <i class="fa-regular fa-envelope" style="margin-right: 6px;" aria-hidden="true"></i>General Inquiries
+              </div>
+              <div class="contact-info__value">
+                <a href="mailto:hello@cdca.org">hello@cdca.org</a>
+              </div>
+            </div>
+
+            <div class="contact-info__item">
+              <div class="contact-info__label">
+                <i class="fa-solid fa-landmark" style="margin-right: 6px;" aria-hidden="true"></i>Start a Club
+              </div>
+              <div class="contact-info__value">
+                <a href="start-a-club.html#interest-form">Fill out the interest form →</a>
+              </div>
+            </div>
+
+            <div class="contact-info__item">
+              <div class="contact-info__label">
+                <i class="fa-solid fa-graduation-cap" style="margin-right: 6px;" aria-hidden="true"></i>Leader Training
+              </div>
+              <div class="contact-info__value">
+                <a href="training.html#signup">Apply for training →</a>
+              </div>
+            </div>
+
+            <div class="contact-info__item">
+              <div class="contact-info__label">
+                <i class="fa-solid fa-newspaper" style="margin-right: 6px;" aria-hidden="true"></i>Press &amp; Media
+              </div>
+              <div class="contact-info__value">
+                <a href="mailto:press@cdca.org">press@cdca.org</a>
+              </div>
+            </div>
+
+            <div class="contact-info__item">
+              <div class="contact-info__label">
+                <i class="fa-solid fa-handshake" style="margin-right: 6px;" aria-hidden="true"></i>Partnerships
+              </div>
+              <div class="contact-info__value">
+                <a href="mailto:partnerships@cdca.org">partnerships@cdca.org</a>
+              </div>
+            </div>
+
+            <div class="contact-info__item">
+              <div class="contact-info__label">
+                <i class="fa-brands fa-instagram" style="margin-right: 6px;" aria-hidden="true"></i>Social Media
+              </div>
+              <div class="contact-info__value">
+                <div class="social-row">
+                  <a href="#" aria-label="Instagram">
+                    <i class="fa-brands fa-instagram" aria-hidden="true"></i> @cdca_org
+                  </a>
+                  <a href="#" aria-label="Twitter/X">
+                    <i class="fa-brands fa-x-twitter" aria-hidden="true"></i> @cdca_org
+                  </a>
+                </div>
+                <div class="social-row" style="margin-top: 8px;">
+                  <a href="#" aria-label="LinkedIn">
+                    <i class="fa-brands fa-linkedin-in" aria-hidden="true"></i> Civil Dialogue Clubs
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-mini">
+            <h4>Before you write…</h4>
+
+            <div class="faq-mini__item">
+              <p>Starting a new club?</p>
+              <span>The <a href="start-a-club.html#interest-form" class="inline-link">interest form</a> is the fastest path — it goes directly to the right person.</span>
+            </div>
+
+            <div class="faq-mini__item">
+              <p>Already lead a club?</p>
+              <span>Apply for <a href="training.html#signup" class="inline-link">Leader Training</a> directly — no need to email first.</span>
+            </div>
+
+            <div class="faq-mini__item">
+              <p>General turnaround time?</p>
+              <span>We typically respond within 3–5 business days. For urgent matters, note it in your subject line.</span>
+            </div>
+
+          </div>
+
+        </aside>
+
+
+        <!-- RIGHT: Contact Form -->
+        <div class="fade-in">
+          <span class="section-label">Send a Message</span>
+          <h2 style="font-size: 1.6rem; margin-bottom: 8px;">What can we help with?</h2>
+          <p style="margin-bottom: 32px;">Choose a topic below to help us route your message, then tell us what's on your mind.</p>
+
+          <!-- Subject quick-select cards -->
+          <div class="subject-cards" id="subject-cards" role="group" aria-label="Select message subject">
+            <div class="subject-card" data-value="start-a-club" role="button" tabindex="0" aria-pressed="false">
+              <span class="subject-card__icon" aria-hidden="true">🏫</span>
+              <span class="subject-card__title">Start a Club</span>
+              <span class="subject-card__sub">New club interest</span>
+            </div>
+            <div class="subject-card" data-value="training" role="button" tabindex="0" aria-pressed="false">
+              <span class="subject-card__icon" aria-hidden="true">🎓</span>
+              <span class="subject-card__title">Leader Training</span>
+              <span class="subject-card__sub">Training program questions</span>
+            </div>
+            <div class="subject-card" data-value="partnership" role="button" tabindex="0" aria-pressed="false">
+              <span class="subject-card__icon" aria-hidden="true">🤝</span>
+              <span class="subject-card__title">Partnership</span>
+              <span class="subject-card__sub">Org or institutional inquiry</span>
+            </div>
+            <div class="subject-card" data-value="press" role="button" tabindex="0" aria-pressed="false">
+              <span class="subject-card__icon" aria-hidden="true">📰</span>
+              <span class="subject-card__title">Press &amp; Media</span>
+              <span class="subject-card__sub">Interviews, coverage, quotes</span>
+            </div>
+            <div class="subject-card" data-value="general" role="button" tabindex="0" aria-pressed="false">
+              <span class="subject-card__icon" aria-hidden="true">💬</span>
+              <span class="subject-card__title">General Question</span>
+              <span class="subject-card__sub">Anything else</span>
+            </div>
+            <div class="subject-card" data-value="feedback" role="button" tabindex="0" aria-pressed="false">
+              <span class="subject-card__icon" aria-hidden="true">💡</span>
+              <span class="subject-card__title">Feedback or Ideas</span>
+              <span class="subject-card__sub">Suggestions for CDCA</span>
+            </div>
+          </div>
+
+          <div class="form-section" style="background: var(--white); border: 1px solid var(--gray-200);">
+
+            <!-- NOTE FOR DEPLOYMENT: Replace action="mailto:placeholder@cdca.org" with your
+                 Formspree endpoint: action="https://formspree.io/f/YOUR_FORM_ID"
+                 Remove method="POST" and enctype attributes when switching to Formspree. -->
+            <form
+              action="mailto:placeholder@cdca.org"
+              method="POST"
+              enctype="text/plain"
+              aria-label="Contact form"
+              id="contact-form"
+            >
+
+              <input type="hidden" name="subject_category" id="subject-hidden" value="" />
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="c-first">First Name <span aria-label="required">*</span></label>
+                  <input type="text" id="c-first" name="first_name" placeholder="Your first name" required />
+                </div>
+                <div class="form-group">
+                  <label for="c-last">Last Name <span aria-label="required">*</span></label>
+                  <input type="text" id="c-last" name="last_name" placeholder="Your last name" required />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="c-email">Email Address <span aria-label="required">*</span></label>
+                <input type="email" id="c-email" name="email" placeholder="your@email.com" required />
+              </div>
+
+              <div class="form-group">
+                <label for="c-org">Organization / School (if applicable)</label>
+                <input type="text" id="c-org" name="organization" placeholder="e.g. Lincoln Academy, The New York Times, etc." />
+              </div>
+
+              <div class="form-group">
+                <label for="c-subject">Subject Line <span aria-label="required">*</span></label>
+                <input type="text" id="c-subject" name="subject" placeholder="Brief subject for your message" required />
+              </div>
+
+              <div class="form-group">
+                <label for="c-message">Your Message <span aria-label="required">*</span></label>
+                <textarea
+                  id="c-message"
+                  name="message"
+                  placeholder="Tell us what's on your mind. The more context you provide, the better we can help."
+                  style="min-height: 180px;"
+                  required
+                ></textarea>
+              </div>
+
+              <div class="form-group">
+                <label for="c-how">How did you hear about CDCA?</label>
+                <select id="c-how" name="how_heard">
+                  <option value="" disabled selected>Select an option</option>
+                  <option value="teacher">A teacher or school staff member</option>
+                  <option value="friend">A friend or classmate</option>
+                  <option value="social">Social media</option>
+                  <option value="news">News article or press coverage</option>
+                  <option value="search">Web search</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+
+              <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; font-size: 1rem; padding: 16px;">
+                <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>
+                Send Message
+              </button>
+
+              <p class="form-note" style="text-align: center; margin-top: 16px;">
+                We read every message and respond within 3–5 business days.
+              </p>
+
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================== QUICK LINKS ===================== -->
+  <section class="section" aria-label="Quick action links">
+    <div class="container">
+      <div class="text-center mb-md">
+        <span class="section-label">Looking for Something Specific?</span>
+        <h2>Go directly to what you need</h2>
+        <div class="divider divider--center"></div>
+      </div>
+
+      <div class="grid-3" style="gap: 24px;">
+
+        <div class="value-card fade-in" style="text-align: center;">
+          <span class="value-card__icon" aria-hidden="true">🏫</span>
+          <h4>Start a New Club</h4>
+          <p style="margin-bottom: 20px;">Ready to launch? The interest form gets you into the pipeline directly.</p>
+          <a href="start-a-club.html#interest-form" class="btn btn-outline-navy" style="width: 100%; justify-content: center;">Go to Interest Form</a>
+        </div>
+
+        <div class="value-card fade-in" style="text-align: center;">
+          <span class="value-card__icon" aria-hidden="true">🎓</span>
+          <h4>Apply for Training</h4>
+          <p style="margin-bottom: 20px;">Already leading a club? Apply for the Leader Training program directly.</p>
+          <a href="training.html#signup" class="btn btn-outline-navy" style="width: 100%; justify-content: center;">Go to Application</a>
+        </div>
+
+        <div class="value-card fade-in" style="text-align: center;">
+          <span class="value-card__icon" aria-hidden="true">🗺️</span>
+          <h4>Find a Club Near You</h4>
+          <p style="margin-bottom: 20px;">Looking for a CDCA club in your area? Check the full directory.</p>
+          <a href="directory.html" class="btn btn-outline-navy" style="width: 100%; justify-content: center;">Browse Directory</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer__inner">
+        <div class="footer__brand">
+          <div class="footer__brand-name">Civil Dialogue Clubs of America</div>
+          <div class="footer__tagline">Building civil dialogue, one club at a time.</div>
+          <p>A student-led national organization dedicated to nonpartisan civic engagement and civil discourse in American high schools.</p>
+          <div class="footer__social" aria-label="Social media links">
+            <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram" aria-hidden="true"></i></a>
+            <a href="#" aria-label="Twitter/X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a>
+            <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in" aria-hidden="true"></i></a>
+          </div>
+        </div>
+        <div class="footer__col">
+          <h5>Organization</h5>
+          <ul>
+            <li><a href="about.html">Our Story</a></li>
+            <li><a href="about.html#mission">Mission &amp; Values</a></li>
+            <li><a href="about.html#founder">Meet the Founder</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h5>Programs</h5>
+          <ul>
+            <li><a href="start-a-club.html">Start a Club</a></li>
+            <li><a href="start-a-club.html#starter-kit">Starter Kit</a></li>
+            <li><a href="training.html">Leader Training</a></li>
+            <li><a href="directory.html">Club Directory</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h5>Get Involved</h5>
+          <ul>
+            <li><a href="start-a-club.html#interest-form">Express Interest</a></li>
+            <li><a href="training.html#signup">Apply for Training</a></li>
+            <li><a href="contact.html">Partner With Us</a></li>
+            <li><a href="contact.html">Press Inquiries</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p>&copy; <span id="year"></span> Civil Dialogue Clubs of America. All rights reserved.</p>
+        <p style="color: rgba(255,255,255,0.2);">Nonpartisan &middot; Student-Led &middot; National</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Subject card selection — updates hidden field and subject line
+    const subjectCards = document.querySelectorAll('.subject-card');
+    const subjectHidden = document.getElementById('subject-hidden');
+    const subjectInput  = document.getElementById('c-subject');
+
+    const subjectLabels = {
+      'start-a-club': 'Starting a New Club',
+      'training':      'Leader Training Inquiry',
+      'partnership':   'Partnership Inquiry',
+      'press':         'Press / Media Inquiry',
+      'general':       'General Question',
+      'feedback':      'Feedback / Ideas'
+    };
+
+    subjectCards.forEach(card => {
+      card.addEventListener('click', () => {
+        subjectCards.forEach(c => {
+          c.classList.remove('selected');
+          c.setAttribute('aria-pressed', 'false');
+        });
+        card.classList.add('selected');
+        card.setAttribute('aria-pressed', 'true');
+        const val = card.dataset.value;
+        subjectHidden.value = val;
+        // Pre-fill subject line only if blank
+        if (!subjectInput.value.trim()) {
+          subjectInput.value = subjectLabels[val] || '';
+        }
+      });
+
+      // Keyboard support
+      card.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          card.click();
+        }
+      });
+    });
+  </script>
+</body>
+</html>

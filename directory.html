@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="CDCA Club Directory — Find CDCA-affiliated nonpartisan politics clubs at high schools across America." />
+  <title>Club Directory — CDCA</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Source+Serif+4:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    /* Directory-specific styles */
+    .directory__search-bar {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 32px;
+    }
+    .directory__search-input {
+      flex: 1;
+      min-width: 220px;
+      position: relative;
+    }
+    .directory__search-input input {
+      padding-left: 44px;
+    }
+    .directory__search-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--gray-400);
+      font-size: 0.9rem;
+      pointer-events: none;
+    }
+    .directory__filters {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+    }
+    .directory__filter-btn {
+      font-family: var(--font-ui);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 8px 18px;
+      border-radius: 20px;
+      border: 1.5px solid var(--gray-200);
+      background: var(--white);
+      color: var(--gray-600);
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+    .directory__filter-btn:hover {
+      border-color: var(--navy);
+      color: var(--navy);
+    }
+    .directory__filter-btn.active {
+      background: var(--navy);
+      color: var(--white);
+      border-color: var(--navy);
+    }
+    .directory__count {
+      font-family: var(--font-ui);
+      font-size: 0.85rem;
+      color: var(--gray-400);
+      margin-bottom: 28px;
+    }
+    .directory__count strong {
+      color: var(--navy);
+    }
+    .directory__grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 28px;
+    }
+    .club-card__header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+    .club-card__monogram {
+      width: 48px;
+      height: 48px;
+      background: var(--navy);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-head);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--gold);
+      flex-shrink: 0;
+    }
+    .club-card__info h4 {
+      font-size: 1rem;
+      margin-bottom: 2px;
+    }
+    .club-card__info .club-card__school {
+      margin-bottom: 0;
+    }
+    .club-card__desc {
+      font-size: 0.88rem;
+      color: var(--gray-600);
+      line-height: 1.65;
+      margin-bottom: 16px;
+      border-top: 1px solid var(--gray-200);
+      padding-top: 14px;
+    }
+    .directory__empty {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 64px 32px;
+      color: var(--gray-400);
+    }
+    .directory__empty i {
+      font-size: 2.5rem;
+      display: block;
+      margin-bottom: 16px;
+      opacity: 0.4;
+    }
+    .directory__empty p {
+      font-family: var(--font-ui);
+      font-size: 0.95rem;
+    }
+    .map-placeholder {
+      background: var(--gray-100);
+      border: 2px dashed var(--gray-200);
+      border-radius: var(--radius-lg);
+      min-height: 320px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      color: var(--gray-400);
+      text-align: center;
+      padding: 40px;
+      margin-bottom: 64px;
+    }
+    .map-placeholder__icon { font-size: 2.5rem; opacity: 0.4; }
+    .map-placeholder__label {
+      font-family: var(--font-ui);
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      max-width: 280px;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===================== NAVIGATION ===================== -->
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="container nav__inner">
+      <a href="index.html" class="nav__logo" aria-label="CDCA Home">
+        <div class="nav__logo-mark">CD</div>
+        <div>
+          <span class="nav__logo-text">CDCA</span>
+          <span class="nav__logo-sub">Civil Dialogue Clubs of America</span>
+        </div>
+      </a>
+      <div class="nav__links">
+        <a href="index.html"        class="nav__link">Home</a>
+        <a href="about.html"        class="nav__link">About</a>
+        <a href="start-a-club.html" class="nav__link">Start a Club</a>
+        <a href="training.html"     class="nav__link">Training</a>
+        <a href="directory.html"    class="nav__link">Directory</a>
+        <a href="contact.html"      class="nav__link">Contact</a>
+        <a href="start-a-club.html" class="nav__link nav__link--cta">Get Started</a>
+      </div>
+      <button class="nav__hamburger" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <nav class="nav__mobile" aria-label="Mobile navigation">
+      <a href="index.html"        class="nav__link">Home</a>
+      <a href="about.html"        class="nav__link">About</a>
+      <a href="start-a-club.html" class="nav__link">Start a Club</a>
+      <a href="training.html"     class="nav__link">Training</a>
+      <a href="directory.html"    class="nav__link">Directory</a>
+      <a href="contact.html"      class="nav__link">Contact</a>
+      <a href="start-a-club.html" class="nav__link nav__link--cta">Get Started →</a>
+    </nav>
+  </nav>
+
+
+  <!-- ===================== PAGE HEADER ===================== -->
+  <section class="page-header">
+    <div class="page-header__grid" aria-hidden="true"></div>
+    <div class="container page-header__inner">
+      <div class="page-header__breadcrumb">
+        <a href="index.html">Home</a>
+        <span aria-hidden="true">/</span>
+        <span>Club Directory</span>
+      </div>
+      <h1>Club Directory</h1>
+      <p>Every CDCA-affiliated club, in one place. This is what it looks like when civil dialogue spreads.</p>
+    </div>
+  </section>
+
+
+  <!-- ===================== MAP PLACEHOLDER ===================== -->
+  <section class="section" style="padding-bottom: 0;">
+    <div class="container">
+
+      <!-- IMAGE / EMBED PLACEHOLDER: Interactive map showing CDCA club locations across the US.
+           Options: embed a Google My Maps iframe, use a Mapbox static map, or replace with a
+           US SVG map with pins. Recommended dimensions: full container width × 320px.
+           Replace this div with your map embed when ready. -->
+      <div class="map-placeholder" role="img" aria-label="Map of CDCA clubs across America">
+        <span class="map-placeholder__icon" aria-hidden="true">🗺️</span>
+        <div class="map-placeholder__label">Interactive Map — Club Locations Across America</div>
+        <p style="font-size: 0.78rem; color: var(--gray-400); margin-top: 4px;">Replace with Google My Maps embed or similar</p>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ===================== DIRECTORY ===================== -->
+  <section class="section section--cream" id="clubs">
+    <div class="container">
+
+      <div class="text-center mb-md">
+        <span class="section-label">Affiliated Clubs</span>
+        <h2>Schools in the network</h2>
+        <div class="divider divider--center"></div>
+        <p class="lead" style="max-width: 560px; margin: 0 auto;">
+          Each of these clubs is independently student-led and committed to the CDCA standard
+          of nonpartisan, civil political discussion.
+        </p>
+      </div>
+
+      <!-- Search & Filter -->
+      <div style="max-width: 860px; margin: 48px auto 0;">
+
+        <div class="directory__search-bar">
+          <div class="directory__search-input" style="position: relative;">
+            <i class="fa-solid fa-magnifying-glass directory__search-icon" aria-hidden="true"></i>
+            <input
+              type="search"
+              id="club-search"
+              placeholder="Search by school or city…"
+              aria-label="Search clubs"
+            />
+          </div>
+        </div>
+
+        <div class="directory__filters" role="group" aria-label="Filter clubs by region">
+          <button class="directory__filter-btn active" data-filter="all">All Clubs</button>
+          <button class="directory__filter-btn" data-filter="northeast">Northeast</button>
+          <button class="directory__filter-btn" data-filter="south">South</button>
+          <button class="directory__filter-btn" data-filter="midwest">Midwest</button>
+          <button class="directory__filter-btn" data-filter="west">West</button>
+        </div>
+
+        <p class="directory__count" id="club-count">
+          Showing <strong id="visible-count">8</strong> affiliated clubs
+        </p>
+
+      </div>
+
+      <!-- Club Cards Grid -->
+      <div class="directory__grid" id="club-grid">
+
+        <!-- CARD 1 -->
+        <article class="club-card fade-in" data-state="northeast" data-name="lincoln civic dialogue" data-city="boston">
+          <!-- IMAGE PLACEHOLDER: School or club photo for Lincoln Academy.
+               Replace photo-placeholder div with <img> when available.
+               Recommended: 400 × 200px landscape. -->
+          <div class="club-card__photo">
+            <div class="photo-placeholder photo-placeholder--card" role="img" aria-label="Lincoln Academy club photo">
+              <span class="photo-placeholder__icon" aria-hidden="true">📷</span>
+              <div class="photo-placeholder__label">Club Photo</div>
+            </div>
+            <span class="club-card__badge">CDCA Affiliated</span>
+          </div>
+          <div class="club-card__body">
+            <div class="club-card__header">
+              <div class="club-card__monogram" aria-hidden="true">LC</div>
+              <div class="club-card__info">
+                <h4>Lincoln Civic Dialogue Club</h4>
+                <div class="club-card__school">Lincoln Academy · Boston, MA</div>
+              </div>
+            </div>
+            <p class="club-card__desc">
+              A biweekly forum for students across the political spectrum to discuss national and local policy.
+              Known for their structured fishbowl format and strong cross-grade participation.
+            </p>
+            <div class="club-card__meta">
+              <span class="club-card__meta-item">
+                <i class="fa-regular fa-calendar" aria-hidden="true"></i> Founded 2023
+              </span>
+              <span class="club-card__meta-item">
+                <i class="fa-regular fa-user" aria-hidden="true"></i> ~24 members
+              </span>
+              <span class="club-card__meta-item">
+                <i class="fa-solid fa-location-dot" aria-hidden="true"></i> MA
+              </span>
+            </div>
+          </div>
+        </article>
+
+        <!-- CARD 2 -->
+        <article class="club-card fade-in" data-state="south" data-name="jefferson dialogue society" data-city="richmond">
+          <div class="club-card__photo">
+            <div class="photo-placeholder photo-placeholder--card" role="img" aria-label="Jefferson High club photo">
+              <span class="photo-placeholder__icon" aria-hidden="true">📷</span>
+              <div class="photo-placeholder__label">Club Photo</div>
+            </div>
+            <span class="club-card__badge">CDCA Affiliated</span>
+          </div>
+          <div class="club-card__body">
+            <div class="club-card__header">
+              <div class="club-card__monogram" aria-hidden="true">JD</div>
+              <div class="club-card__info">
+                <h4>Jefferson Dialogue Society</h4>
+                <div class="club-card__school">Jefferson High School · Richmond, VA</div>
+              </div>
+            </div>
+            <p class="club-card__desc">
+              Monthly Socratic seminars on constitutional issues and current events. One of the first CDCA
+              high school affiliates, now in its second year with a trained student leadership team.
+            </p>
+            <div class="club-card__meta">
+              <span class="club-card__meta-item">
+                <i class="fa-regular fa-calendar" aria-hidden="true"></i> Founded 2023
+              </span>
+              <span class="club-card__meta-item">
+                <i class="fa-regular fa-user" aria-hidden="true"></i> ~18 members
+              </span>
+              <span class="club-card__meta-item">
+                <i class="fa-solid fa-location-dot" aria-hidden="true"></i> VA
+              </span>
+            </div>
+          </div>
+        </article>
+
+        <!-- CARD 3 -->
+        <article class="club-card fade-in" data-state="midwest" data-name="lakeview political forum" data-city="chicago">
+          <div class="club-card__photo">
+            <div class="photo-placeholder photo-placeholder--card" role="img" aria-label="Lakeview High club photo">
+              <span class="photo-placeholder__icon" aria-hidden="true">📷</span>
+              <div class="photo-placeholder__label">Club Photo</div>
+            </div>
+            <span class="club-card__badge">CDCA Affiliated</span>
+          </div>
+          <div class="club-card__body">
+            <div class="club-card__header">
+              <div class="club-card__monogram" aria-hidden="true">LP</div>
+              <div class="club-card__info">
+                <h4>Lakeview Political Forum</h4>
+                <div class="club-card__school">Lakeview High School · Chicago, IL</div>
+              </div>
+            </div>
+            <p class="club-card__desc">
+              A weekly discussion club that draws students from across a politically diverse Chicago neighborhood.
+              Uses CDCA formats alongside locally developed "perspective rounds" that have become a signature format.
+            </p>
+            <div class="club-card__meta">
+              <span class="club-card__meta-item">
+                <i class="fa-regular fa-calendar" aria-hidden="true"></i> Founded 2024
+              </span>
+              <span class="club-card__meta-item">
+                <i class="fa-regular fa-user" aria-hidden="true"></i> ~31 members
+              </span>
+              <span class="club-card__meta-item">
+                <i class="fa-solid fa-location-dot" aria-hidden="true"></i> IL
+              </span>
+            </div>
+          </div>
+        </article>
+
+        <!-- CARD 4 -->
+        <article class="club-card fade-in" data-state="west" data-name="civic voices club" data-city="phoenix">
+          <div class="club-card__photo">
+            <div class="photo-placeholder photo-placeholder--card" role="img" aria-label="Westview High club photo">
+              <span class="photo-placeholder__icon" aria-hidden="true">📷</span>
+              <div class="photo-placeholder__label">Club Photo</div>
+            </div>
+            <span class="club-card__badge">CDCA Affiliated</span>
+          </div>
+          <div class="club-card__body">
+            <div class="club-card__header">
+              <div class="club-card__monogram" aria-hidden="true">CV</div>
+              <div class="club-card__info">
+                <h4>Civic Voices Club</h4>
+                <div class="club-card__school">Westview High School · Phoenix, AZ</div>
+              </div>
+            </div>
+            <p class="club-card__desc">
+              Launched by a junior in 2024, this club hosts monthly forums on immigration, education policy,
+              and local government — issues especially resonant for their diverse student population.
+            </p>
+            <div class="club-card__meta">
+              <span class="club-card__meta-item">
+                <i class="fa-regular fa-calendar" aria-hidden="true"></i> Founded 2024
+              </span>
+              <span class="club-card__meta-item">
+                <i class="fa-regular fa-user" aria-hidden="true"></i> ~22 members
+              </span>
+              <span class="club-card__meta-item">
+                <i class="fa-solid fa-location-dot" aria-hidden="true"></i> AZ
+              </span>
+            </div>
+          </div>
+        </article>
+
+        <!-- CARD 5 -->
+        <article class="club-card fade-in" data-state="northeast" data-name="hamilton dialogue project" data-city="new york">
+          <div class="club-card__photo">
+            <div class="photo-placeholder photo-placeholder--card" role="img" aria-label="Hamilton HS club photo">
+              <span class="photo-placeholder__icon" aria-hidden="true">📷</span>
+              <div class="photo-placeholder__label">Club Photo</div>
+            </div>
+            <span class="club-card__badge">CDCA Affiliated</span>
+          </div>
+          <div class="club-card__body">
+            <div class="club-card__header">
+              <div class="club-card__monogram" aria-hidden="true">HD</div>
+              <div class="club-card__info">
+                <h4>Hamilton Dialogue Project</h4>
+                <div class="club-card__school">Hamilton High School · New York, NY</div>
+              </div>
+            </div>
+            <p class="club-card__desc">
+              One of the largest CDCA clubs in the network, meeting biweekly with a rotating co-facilitator
+              model. Their annual "Across the Aisle" event draws students from three neighboring schools.
+            </p>
+            <div class="club-card__meta">
+              <span class="club-card__meta-item">
+                <i class="fa-regular fa-calendar" aria-hidden="true"></i> Founded 2023
+              </span>
+              <span class="club-card__meta-item">
+                <i class="fa-regular fa-user" aria-hidden="true"></i> ~40 members
+              </span>
+              <span class="club-card__meta-item">
+                <i class="fa-solid fa-location-dot" aria-hidden="true"></i> NY
+              </span>
+            </div>
+          </div>
+        </article>
+
+        <!-- CARD 6 -->
+        <article class="club-card fade-in" data-state="south" data-name="voices across the aisle" data-city="atlanta">
+          <div class="club-card__photo">
+            <div class="photo-placeholder photo-placeholder--card" role="img" aria-label="Peachtree Ridge club photo">
+              <span class="photo-placeholder__icon" aria-hidden="true">📷</span>
+              <div class="photo-placeholder__label">Club Photo</div>
+            </div>
+            <span class="club-card__badge">CDCA Affiliated</span>
+          </div>
+          <div class="club-card__body">
+            <div class="club-card__header">
+              <div class="club-card__monogram" aria-hidden="true">VA</div>
+              <div class="club-card__info">
+                <h4>Voices Across the Aisle</h4>
+                <div class="club-card__school">Peachtree Ridge High · Atlanta, GA</div>
+              </div>
+            </div>
+            <p class="club-card__desc">
+              Started by twin siblings with sharply different political views, this club has become a model
+              for how personal relationships can anchor civil disagreement. Meets monthly with guest speakers.
+            </p>
+            <div class="club-card__meta">
+              <span class="club-card__meta-item">
+                <i class="fa-regular fa-calendar" aria-hidden="true"></i> Founded 2024
+              </span>
+              <span class="club-card__meta-item">
+                <i class="fa-regular fa-user" aria-hidden="true"></i> ~27 members
+              </span>
+              <span class="club-card__meta-item">
+                <i class="fa-solid fa-location-dot" aria-hidden="true"></i> GA
+              </span>
+            </div>
+          </div>
+        </article>
+
+        <!-- CARD 7 -->
+        <article class="club-card fade-in" data-state="midwest" data-name="common ground club" data-city="minneapolis">
+          <div class="club-card__photo">
+            <div class="photo-placeholder photo-placeholder--card" role="img" aria-label="Roosevelt HS club photo">
+              <span class="photo-placeholder__icon" aria-hidden="true">📷</span>
+              <div class="photo-placeholder__label">Club Photo</div>
+            </div>
+            <span class="club-card__badge">CDCA Affiliated</span>
+          </div>
+          <div class="club-card__body">
+            <div class="club-card__header">
+              <div class="club-card__monogram" aria-hidden="true">CG</div>
+              <div class="club-card__info">
+                <h4>Common Ground Club</h4>
+                <div class="club-card__school">Roosevelt High School · Minneapolis, MN</div>
+              </div>
+            </div>
+            <p class="club-card__desc">
+              Focused on local and state politics, this club brings together students from one of Minnesota's
+              most politically mixed school communities. Known for data-informed discussions that go beyond talking points.
+            </p>
+            <div class="club-card__meta">
+              <span class="club-card__meta-item">
+                <i class="fa-regular fa-calendar" aria-hidden="true"></i> Founded 2024
+              </span>
+              <span class="club-card__meta-item">
+                <i class="fa-regular fa-user" aria-hidden="true"></i> ~19 members
+              </span>
+              <span class="club-card__meta-item">
+                <i class="fa-solid fa-location-dot" aria-hidden="true"></i> MN
+              </span>
+            </div>
+          </div>
+        </article>
+
+        <!-- CARD 8 -->
+        <article class="club-card fade-in" data-state="west" data-name="open table discussions" data-city="seattle">
+          <div class="club-card__photo">
+            <div class="photo-placeholder photo-placeholder--card" role="img" aria-label="Northgate HS club photo">
+              <span class="photo-placeholder__icon" aria-hidden="true">📷</span>
+              <div class="photo-placeholder__label">Club Photo</div>
+            </div>
+            <span class="club-card__badge">CDCA Affiliated</span>
+          </div>
+          <div class="club-card__body">
+            <div class="club-card__header">
+              <div class="club-card__monogram" aria-hidden="true">OT</div>
+              <div class="club-card__info">
+                <h4>Open Table Discussions</h4>
+                <div class="club-card__school">Northgate High School · Seattle, WA</div>
+              </div>
+            </div>
+            <p class="club-card__desc">
+              An intimate monthly forum of 15–20 students that prioritizes depth over breadth — each meeting
+              tackles one question from multiple angles over 90 minutes. A consistent favorite in the network.
+            </p>
+            <div class="club-card__meta">
+              <span class="club-card__meta-item">
+                <i class="fa-regular fa-calendar" aria-hidden="true"></i> Founded 2024
+              </span>
+              <span class="club-card__meta-item">
+                <i class="fa-regular fa-user" aria-hidden="true"></i> ~17 members
+              </span>
+              <span class="club-card__meta-item">
+                <i class="fa-solid fa-location-dot" aria-hidden="true"></i> WA
+              </span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Empty state (hidden by default, shown by JS when search has no results) -->
+        <div class="directory__empty" id="no-results" style="display:none;" aria-live="polite">
+          <i class="fa-solid fa-circle-question" aria-hidden="true"></i>
+          <p>No clubs match your search. <a href="start-a-club.html" class="inline-link">Be the first in your area →</a></p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================== NOT IN THE DIRECTORY? ===================== -->
+  <section class="section" aria-label="Start a club prompt">
+    <div class="container">
+      <div style="max-width: 760px; margin: 0 auto; text-align: center;">
+        <span class="section-label">Don't See Your School?</span>
+        <h2>Your school could be on this list.</h2>
+        <div class="divider divider--center"></div>
+        <p class="lead" style="max-width: 540px; margin: 0 auto 36px;">
+          Every club in this directory started with one student who decided their school needed a space
+          for honest political conversation. That student could be you.
+        </p>
+        <div class="btn-group" style="justify-content: center;">
+          <a href="start-a-club.html" class="btn btn-primary">
+            <i class="fa-solid fa-plus" aria-hidden="true"></i> Start a Club
+          </a>
+          <a href="contact.html" class="btn btn-outline-navy">Ask a Question First</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================== CTA BANNER ===================== -->
+  <section class="cta-banner" aria-label="Call to action">
+    <div class="container text-center">
+      <span class="section-label" style="color: var(--navy-dark); opacity: 0.6;">Already in the Network?</span>
+      <h2 style="margin-bottom: 16px;">Want your club featured here?</h2>
+      <p class="lead" style="max-width: 520px; margin: 0 auto 36px; color: rgba(27,42,74,0.65);">
+        If you lead a CDCA-affiliated club and want to update your listing or add a photo,
+        reach out and we'll get it done.
+      </p>
+      <a href="contact.html" class="btn btn-primary">
+        <i class="fa-regular fa-envelope" aria-hidden="true"></i> Contact Us
+      </a>
+    </div>
+  </section>
+
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer__inner">
+        <div class="footer__brand">
+          <div class="footer__brand-name">Civil Dialogue Clubs of America</div>
+          <div class="footer__tagline">Building civil dialogue, one club at a time.</div>
+          <p>A student-led national organization dedicated to nonpartisan civic engagement and civil discourse in American high schools.</p>
+          <div class="footer__social" aria-label="Social media links">
+            <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram" aria-hidden="true"></i></a>
+            <a href="#" aria-label="Twitter/X"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></a>
+            <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in" aria-hidden="true"></i></a>
+          </div>
+        </div>
+        <div class="footer__col">
+          <h5>Organization</h5>
+          <ul>
+            <li><a href="about.html">Our Story</a></li>
+            <li><a href="about.html#mission">Mission &amp; Values</a></li>
+            <li><a href="about.html#founder">Meet the Founder</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h5>Programs</h5>
+          <ul>
+            <li><a href="start-a-club.html">Start a Club</a></li>
+            <li><a href="start-a-club.html#starter-kit">Starter Kit</a></li>
+            <li><a href="training.html">Leader Training</a></li>
+            <li><a href="directory.html">Club Directory</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h5>Get Involved</h5>
+          <ul>
+            <li><a href="start-a-club.html#interest-form">Express Interest</a></li>
+            <li><a href="training.html#signup">Apply for Training</a></li>
+            <li><a href="contact.html">Partner With Us</a></li>
+            <li><a href="contact.html">Press Inquiries</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p>&copy; <span id="year"></span> Civil Dialogue Clubs of America. All rights reserved.</p>
+        <p style="color: rgba(255,255,255,0.2);">Nonpartisan &middot; Student-Led &middot; National</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Live search within directory
+    const searchInput = document.getElementById('club-search');
+    const cards = document.querySelectorAll('.club-card');
+    const noResults = document.getElementById('no-results');
+    const visibleCount = document.getElementById('visible-count');
+    let activeFilter = 'all';
+
+    function updateDirectory() {
+      const query = searchInput.value.toLowerCase().trim();
+      let count = 0;
+
+      cards.forEach(card => {
+        const name = (card.dataset.name || '').toLowerCase();
+        const city = (card.dataset.city || '').toLowerCase();
+        const region = card.dataset.state || '';
+
+        const matchesSearch = !query || name.includes(query) || city.includes(query);
+        const matchesFilter = activeFilter === 'all' || region === activeFilter;
+
+        if (matchesSearch && matchesFilter) {
+          card.style.display = '';
+          count++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      visibleCount.textContent = count;
+      noResults.style.display = count === 0 ? 'block' : 'none';
+    }
+
+    searchInput.addEventListener('input', updateDirectory);
+
+    document.querySelectorAll('.directory__filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.directory__filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeFilter = btn.dataset.filter;
+        updateDirectory();
+      });
+    });
+  </script>
+</body>
+</html>
