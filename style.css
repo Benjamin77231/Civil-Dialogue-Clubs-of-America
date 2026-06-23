@@ -1162,6 +1162,8 @@ textarea { min-height: 140px; resize: vertical; }
 .hero__photo {
   position: relative;
   z-index: 2;
+  max-width: 380px;
+  margin-left: auto;
 }
 
 .photo-placeholder--hero-side {
