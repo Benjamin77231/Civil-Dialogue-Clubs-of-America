@@ -173,11 +173,64 @@ document.addEventListener('DOMContentLoaded', () => {
     function update(now) {
       const elapsed = now - start;
       const progress = Math.min(elapsed / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+      const eased = 1 - Math.pow(1 - progress, 3);
       el.textContent = Math.round(eased * target).toLocaleString();
       if (progress < 1) requestAnimationFrame(update);
     }
     requestAnimationFrame(update);
+  }
+
+  /* ---- Carousel ---- */
+  const carousel = document.querySelector('.carousel');
+  if (carousel) {
+    const track = carousel.querySelector('.carousel__track');
+    const slides = carousel.querySelectorAll('.carousel__slide');
+    const prevBtn = carousel.querySelector('.carousel__btn--prev');
+    const nextBtn = carousel.querySelector('.carousel__btn--next');
+    const indicators = carousel.querySelectorAll('.carousel__indicator');
+
+    let currentIndex = 0;
+    const slideWidth = slides[0]?.offsetWidth || 0;
+    const gap = 24;
+
+    function updateCarousel() {
+      const offset = -(currentIndex * (slideWidth + gap));
+      track.style.transform = `translateX(${offset}px)`;
+
+      indicators.forEach((indicator, idx) => {
+        indicator.classList.toggle('active', idx === currentIndex);
+      });
+
+      prevBtn.disabled = currentIndex === 0;
+      nextBtn.disabled = currentIndex === slides.length - 1;
+    }
+
+    prevBtn?.addEventListener('click', () => {
+      if (currentIndex > 0) {
+        currentIndex--;
+        updateCarousel();
+      }
+    });
+
+    nextBtn?.addEventListener('click', () => {
+      if (currentIndex < slides.length - 1) {
+        currentIndex++;
+        updateCarousel();
+      }
+    });
+
+    indicators.forEach((indicator, idx) => {
+      indicator.addEventListener('click', () => {
+        currentIndex = idx;
+        updateCarousel();
+      });
+    });
+
+    updateCarousel();
+
+    window.addEventListener('resize', () => {
+      updateCarousel();
+    });
   }
 
   /* ---- Sticky Nav Shadow on Scroll ---- */
